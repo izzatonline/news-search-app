@@ -3,6 +3,11 @@ import OrangeButton from "./OrangeButton";
 import { Link } from "react-router-dom";
 
 const MyFavouritesPanel = ({ myFavourites, clearmyFavourites }) => {
+    const handleClearFavourites = () => {
+        localStorage.removeItem("myFavourites");
+        clearmyFavourites();
+    };
+
     return (
         <>
             <Grid
@@ -11,16 +16,17 @@ const MyFavouritesPanel = ({ myFavourites, clearmyFavourites }) => {
                 justifyContent="space-between"
                 alignItems="center"
                 spacing={2}
+                marginLeft={1}
             >
                 <Grid item>
                     <Typography variant="h6">
                         My Favourites: {myFavourites.length}
                     </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item marginRight={3}>
                     <OrangeButton
                         variant="contained"
-                        onClick={clearmyFavourites}
+                        onClick={handleClearFavourites}
                     >
                         <Typography>Clear</Typography>
                     </OrangeButton>
@@ -43,7 +49,7 @@ const MyFavouritesPanel = ({ myFavourites, clearmyFavourites }) => {
                                     rel="noopener noreferrer"
                                     className="link-style"
                                 >
-                                    <h3>{favourite.title}</h3>
+                                    <h4>{favourite.title}</h4>
                                 </Link>
                             </li>
                         ))}

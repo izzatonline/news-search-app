@@ -30,7 +30,6 @@ const HomePage = () => {
             prevFavourites.filter((item) => item !== newsItemToRemove)
         );
 
-        // Update localStorage as well
         const updatedFavorites = myFavourites.filter(
             (item) => item !== newsItemToRemove
         );
@@ -51,12 +50,18 @@ const HomePage = () => {
                 item
                 lg={1}
                 style={{ maxHeight: "10vh" }}
+                marginBottom={2}
             >
                 <Header onSearch={handleSearch} />
             </Grid>
             <Grid className="content-container" item lg={11}>
                 <Grid container direction="row" style={{ height: "100%" }}>
-                    <Grid className="left-panel-container" item lg="2.5">
+                    <Grid
+                        className="left-panel-container"
+                        item
+                        lg="2"
+                        marginRight={3}
+                    >
                         <MyFavouritesPanel
                             style={{ overflowY: "scroll" }}
                             myFavourites={myFavourites}

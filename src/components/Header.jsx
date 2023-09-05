@@ -1,8 +1,59 @@
-import { Grid, TextField, Typography, Chip } from "@mui/material";
-import FaceIcon from "@mui/icons-material/Face";
-import { Link } from "react-router-dom";
+import React from "react";
+import { styled, alpha } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import OrangeButton from "./OrangeButton";
+import { Chip } from "@mui/material";
+import FaceIcon from "@mui/icons-material/Face";
+import { Link } from "react-router-dom";
+
+const StyledAppBar = styled(AppBar)({
+    backgroundColor: "#808080", // Gray background color
+});
+
+const Search = styled("div")(({ theme }) => ({
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+        marginLeft: theme.spacing(3),
+        width: "auto",
+    },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: "inherit",
+    "& .MuiInputBase-input": {
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("md")]: {
+            width: "20ch",
+        },
+    },
+}));
 
 const Header = ({ onSearch }) => {
     const [searchKeyword, setSearchKeyword] = useState("");
@@ -12,47 +63,63 @@ const Header = ({ onSearch }) => {
     };
 
     return (
-        <Grid container direction={"row"} spacing={2}>
-            <Grid item xs={4}>
-                <Typography
-                    variant="h5"
-                    style={{ textAlign: "left", padding: 10 }}
-                >
-                    Find My News
-                </Typography>
-            </Grid>
-            <Grid
-                container
-                xs={4}
-                spacing={2}
-                style={{ textAlign: "center", padding: 10 }}
-            >
-                <Grid item>
-                    <TextField
-                        label="What are you looking for..."
-                        size="medium"
-                        defaultValue=""
-                        value={searchKeyword}
-                        onChange={(e) => setSearchKeyword(e.target.value)}
-                    ></TextField>
-                </Grid>
-                <Grid item>
-                    <OrangeButton variant="contained" onClick={handleSearch}>
-                        <Typography variant="h9">Search</Typography>
-                    </OrangeButton>
-                </Grid>
-            </Grid>
-            <Grid item xs={4}>
-                <div style={{ textAlign: "right", padding: 10 }}>
-                    <Chip icon={<FaceIcon />} label="User" variant="outlined" />
-                    <Link to="/">
-                        <OrangeButton variant="contained" to="/">
-                            Logout
+        <Box sx={{ flexGrow: 1 }}>
+            <StyledAppBar position="static">
+                <Toolbar>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{ display: { xs: "none", sm: "block" } }}
+                    >
+                        FIND MY NEWS
+                    </Typography>
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search…"
+                            inputProps={{ "aria-label": "search" }}
+                            defaultValue=""
+                            value={searchKeyword}
+                            onChange={(e) => setSearchKeyword(e.target.value)}
+                        />
+                        <OrangeButton
+                            variant="contained"
+                            onClick={handleSearch}
+                        >
+                            <Typography variant="h9">Search</Typography>
                         </OrangeButton>
-                    </Link>
-                </div>
-            </Grid>
-        </Grid>
+                    </Search>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Box
+                        sx={{ display: { xs: "none", md: "flex" } }}
+                        marginRight={1}
+                    >
+                        <Chip
+                            icon={<FaceIcon style={{ color: "white" }} />}
+                            label="ADMIN"
+                            variant="filled"
+                            style={{
+                                backgroundColor: "#F39C12",
+                                color: "white",
+                            }}
+                        />
+                    </Box>
+                    <Box
+                        sx={{ display: { xs: "none", md: "flex" } }}
+                        spacing={1}
+                    >
+                        <Link to="/">
+                            <OrangeButton variant="contained" to="/">
+                                Logout
+                            </OrangeButton>
+                        </Link>
+                    </Box>
+                </Toolbar>
+            </StyledAppBar>
+        </Box>
     );
 };
 

@@ -12,7 +12,7 @@ import { styled } from "@mui/material/styles";
 import OrangeButton from "./OrangeButton";
 
 const CenterBox = styled(Box)({
-    backgroundColor: "white", // blue color
+    backgroundColor: "white",
     width: "300px",
     height: "250px",
     display: "flex",

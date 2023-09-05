@@ -13,27 +13,38 @@ const DisplayResults = ({
     const [pageNo, setPageNo] = useState(1);
 
     useEffect(() => {
+        const fetchNewsData = async () => {
+            setIsLoading(true);
+            const apiKey = "6bf6d1bcba094265b743b04313cd871f";
+            const pageSize = 8;
+
+            const apiUrl = `https://newsapi.org/v2/everything?apiKey=${apiKey}&sortBy=publishedAt&q=${searchKeyword}&searchIn=title&pageSize=${pageSize}&page=${pageNo}&language=en`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const newArticles = data.articles || data.items || [];
+
+                if (pageNo === 1) {
+                    setNewsData(newArticles);
+                } else {
+                    setNewsData((prevNewsData) => [
+                        ...prevNewsData,
+                        ...newArticles,
+                    ]);
+                }
+            } catch (error) {
+                console.error("Error fetching news data:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
         fetchNewsData();
     }, [searchKeyword, pageNo]);
 
-    const fetchNewsData = async () => {
-        setIsLoading(true);
-        const apiKey = "6bf6d1bcba094265b743b04313cd871f";
-        // const keyword = searchKeyword;
-        const pageSize = 8;
-
-        const apiUrl = `https://newsapi.org/v2/everything?apiKey=${apiKey}&sortBy=publishedAt&q=${searchKeyword}&searchIn=title&pageSize=${pageSize}&page=${pageNo}&language=en`;
-
-        try {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            const newArticles = data.articles || data.items || [];
-            setNewsData((prevNewsData) => [...prevNewsData, ...newArticles]);
-        } catch (error) {
-            console.error("Error fetching news data:", error);
-        } finally {
-            setIsLoading(false);
-        }
+    const handleLoadMore = () => {
+        setPageNo(pageNo + 1);
     };
 
     return (
@@ -48,19 +59,24 @@ const DisplayResults = ({
                         />
                     </Grid>
                 ))}
-                <Grid item xs={12}>
+                <Grid
+                    item
+                    xs={12}
+                    margin={2}
+                    justifyContent="center"
+                    alignItems="center"
+                >
                     {isLoading && <LinearProgress />}
                     {newsData.length > 0 && (
                         <OrangeButton
                             variant="contained"
-                            onClick={() => setPageNo(pageNo + 1)}
+                            onClick={handleLoadMore}
                         >
                             Load More
                         </OrangeButton>
                     )}
                 </Grid>
             </Grid>
-            {/* <LinearProgress className="progress-bar" /> */}
         </div>
     );
 };
