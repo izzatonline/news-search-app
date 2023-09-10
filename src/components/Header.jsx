@@ -10,7 +10,7 @@ import { useState } from "react";
 import OrangeButton from "./OrangeButton";
 import { Chip } from "@mui/material";
 import FaceIcon from "@mui/icons-material/Face";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const StyledAppBar = styled(AppBar)({
     backgroundColor: "#808080", // Gray background color
@@ -55,11 +55,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const Header = ({ onSearch }) => {
+const Header = ({ onSearch, isLoggedIn }) => {
     const [searchKeyword, setSearchKeyword] = useState("");
+    const navigate = useNavigate();
 
     const handleSearch = () => {
         onSearch(searchKeyword);
+    };
+
+    const handleLogout = () => {
+        // Handle logout logic here, e.g., clearing login status
+        // You can replace this with your actual logout logic
+        localStorage.removeItem("isLoggedIn");
+        navigate("/");
     };
 
     return (
@@ -111,11 +119,14 @@ const Header = ({ onSearch }) => {
                         sx={{ display: { xs: "none", md: "flex" } }}
                         spacing={1}
                     >
-                        <Link to="/">
-                            <OrangeButton variant="contained" to="/">
+                        {isLoggedIn && (
+                            <OrangeButton
+                                variant="contained"
+                                onClick={handleLogout}
+                            >
                                 Logout
                             </OrangeButton>
-                        </Link>
+                        )}
                     </Box>
                 </Toolbar>
             </StyledAppBar>

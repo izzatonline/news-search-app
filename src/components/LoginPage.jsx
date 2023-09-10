@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Alert,
@@ -30,18 +30,24 @@ const LoginPage = (props) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    useEffect(() => {
+        const isUserLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+        if (isUserLoggedIn) {
+            setIsLoggedIn(true);
+            navigate("/home");
+        }
+    }, [navigate]);
+
     const handleLogin = () => {
         if (username === "admin" && password === "admin") {
+            localStorage.setItem("isLoggedIn", "true");
             setIsLoggedIn(true);
             navigate("/home");
         } else {
             setErrorMessage("Invalid credentials");
         }
     };
-
-    if (isLoggedIn) {
-        navigate("/home");
-    }
 
     return (
         <Grid

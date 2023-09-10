@@ -4,7 +4,7 @@ import { Grid } from "@mui/material";
 import Header from "./Header";
 import { useState, useEffect } from "react";
 
-const HomePage = () => {
+const HomePage = ({ isLoggedIn }) => {
     const [searchKeyword, setSearchKeyword] = useState("");
     const [myFavourites, setMyFavourites] = useState(() => {
         const storedFavorites = localStorage.getItem("myFavourites");
@@ -52,7 +52,7 @@ const HomePage = () => {
                 style={{ maxHeight: "10vh" }}
                 marginBottom={2}
             >
-                <Header onSearch={handleSearch} />
+                <Header onSearch={handleSearch} isLoggedIn={isLoggedIn} />
             </Grid>
             <Grid className="content-container" item lg={11}>
                 <Grid container direction="row" style={{ height: "100%" }}>
